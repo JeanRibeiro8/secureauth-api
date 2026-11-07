@@ -1,30 +1,93 @@
+ <div align="center">
+
 # SecureAuth API
 
-A secure user authentication and account-management REST API built with **Python 3.12+** and **FastAPI**. The project demonstrates user registration, password hashing with Argon2id, JWT access tokens, protected routes, PostgreSQL persistence, database migrations, and automated API tests.
+### Secure User Authentication & Account Management REST API
 
-## Features
+A REST API built with Python and FastAPI, featuring secure user authentication, JWT access tokens, Argon2id password hashing, and PostgreSQL persistence.
+
+![Python](https://img.shields.io/badge/Python-3.12+-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-REST_API-009688?style=for-the-badge&logo=fastapi&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-Database-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-D71F00?style=for-the-badge&logo=sqlalchemy&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-Authentication-black?style=for-the-badge&logo=jsonwebtokens&logoColor=white)
+
+</div>
+
+
+---
+
+## 📸 Preview
+
+<div align="center">
+
+### Dashboard Preview
+
+![DevInsight Preview](./public/secureauthapi.png)
+
+</div>
+
+> **Live Demo:** [https://./]
+> **Repository:** [https://github.com/JeanRibeiro8/secureauth-api]
+
+---
+
+## 📌 About the Project
+
+**SecureAuth API** is a backend project focused on implementing secure authentication and account-management functionality through a RESTful API.
+
+Built with **Python 3.12+**, **FastAPI**, and **PostgreSQL**, the application provides user registration, credential verification, JWT-based authentication, protected endpoints, and profile management.
+
+The project emphasizes security practices such as Argon2id password hashing, token validation, environment-based configuration, and automated testing.
+
+### Key Features
+
+- User registration and authentication.
+- Secure password hashing using Argon2id.
+- JWT access token generation and validation.
+- Protected routes using HTTP Bearer authentication.
+- Authenticated user profile retrieval and updates.
+- Password changes with automatic invalidation of previously issued access tokens.
+- Duplicate email prevention.
+- PostgreSQL persistence and Alembic migrations.
+- Automated API tests with pytest and HTTPX.
+- Interactive API documentation with Swagger UI.
+
+## ✨ Features
+
+### Authentication & Security
 
 - Register users with name, email, and password.
-- Authenticate users with email and password.
-- Hash passwords with Argon2id; plaintext passwords are never stored.
-- Issue signed, expiring JWT access tokens.
-- Validate token signature, expiration, token type, subject, and token version.
-- Protect endpoints with HTTP Bearer authentication.
-- Retrieve and update the authenticated user's own profile.
-- Change the authenticated user's password.
-- Invalidate previously issued access tokens after a password change using an internal token-version counter.
-- Prevent duplicate email addresses.
-- Keep password hashes out of API response schemas.
-- Avoid echoing submitted values in validation error responses.
-- Manage PostgreSQL schema changes with Alembic.
-- Run endpoint tests using pytest, HTTPX, and an isolated in-memory SQLite database.
-- Explore the API through generated OpenAPI documentation at `/docs`.
+- Authenticate users using email and password.
+- Hash passwords with Argon2id — plaintext passwords are never stored.
+- Generate signed and expiring JWT access tokens.
+- Validate token signature, expiration, type, subject, and version.
+- Invalidate previously issued access tokens after password changes.
+- Keep password hashes out of API responses.
+- Avoid exposing submitted values in validation error responses.
 
-## Technology stack
+### Account Management
+
+- Retrieve the authenticated user's profile.
+- Update account name and email.
+- Change the authenticated user's password.
+- Prevent duplicate email addresses.
+- Use the authenticated identity instead of accepting another user's ID.
+
+### API & Database
+
+- RESTful endpoints with structured request and response schemas.
+- PostgreSQL database integration.
+- SQLAlchemy ORM for database operations.
+- Alembic for database schema migrations.
+- Pydantic v2 for data validation.
+- Automated tests using an isolated in-memory SQLite database.
+
+## 🛠️ Technology Stack
 
 | Technology | Purpose |
-| --- | --- |
-| Python 3.12+ | Application language |
+|---|---|
+| Python 3.12+ | Core programming language |
 | FastAPI | REST API framework |
 | Pydantic v2 | Request validation and response schemas |
 | SQLAlchemy 2 | ORM and database access |
@@ -32,13 +95,13 @@ A secure user authentication and account-management REST API built with **Python
 | Psycopg 3 | PostgreSQL driver |
 | Alembic | Database migrations |
 | PyJWT | JWT creation and validation |
-| argon2-cffi (Argon2id) | Password hashing |
-| pytest | Automated tests |
-| HTTPX | HTTP client for API tests |
+| Argon2-cffi | Password hashing |
+| Pytest | Automated testing |
+| HTTPX | API testing client |
 
-## Architecture
+## 🏗️ Architecture
 
-The application separates HTTP handling, business rules, data access, and persistence.
+The application follows a layered architecture, separating HTTP handling, business logic, data access, and database persistence.
 
 ```text
 secureauth-api/
@@ -77,89 +140,74 @@ secureauth-api/
 └── requirements.txt
 ```
 
-### Request flow
+### Request Flow
 
-1. A route receives and validates an HTTP request.
-2. Pydantic schemas validate the request or shape the response.
-3. Services apply authentication and account-management rules.
-4. Repositories perform user queries through SQLAlchemy.
-5. PostgreSQL persists user records and password hashes.
+1. API routes receive HTTP requests.
+2. Pydantic schemas validate incoming data and structure responses.
+3. Services handle authentication and account-management rules.
+4. Repositories perform database queries through SQLAlchemy.
+5. PostgreSQL stores user records and password hashes.
 
-## API endpoints
+## 🔌 API Endpoints
 
 ### Authentication
 
-| Method | Endpoint | Description | Success |
-| --- | --- | --- | --- |
-| `POST` | `/auth/register` | Register a new account | `201 Created` |
-| `POST` | `/auth/login` | Verify credentials and issue an access token | `200 OK` |
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/auth/register` | Register a new account |
+| `POST` | `/auth/login` | Authenticate and receive an access token |
 
-### Authenticated user
-
-| Method | Endpoint | Description | Success |
-| --- | --- | --- | --- |
-| `GET` | `/users/me` | Retrieve the authenticated user's profile | `200 OK` |
-| `PATCH` | `/users/me` | Update the authenticated user's name and/or email | `200 OK` |
-| `PATCH` | `/users/me/password` | Change the authenticated user's password | `204 No Content` |
-
-### Health and documentation
+### Authenticated User
 
 | Method | Endpoint | Description |
-| --- | --- | --- |
+|---|---|---|
+| `GET` | `/users/me` | Retrieve the authenticated user's profile |
+| `PATCH` | `/users/me` | Update the user's name and/or email |
+| `PATCH` | `/users/me/password` | Change the user's password |
+
+### Health & Documentation
+
+| Method | Endpoint | Description |
+|---|---|---|
 | `GET` | `/` | Basic API information |
 | `GET` | `/health` | Check API and database connectivity |
-| `GET` | `/docs` | Interactive Swagger UI |
+| `GET` | `/docs` | Interactive Swagger documentation |
 | `GET` | `/redoc` | ReDoc documentation |
 
-A refresh-token endpoint is intentionally not included in this first version. The API issues short-lived access tokens (30 minutes by default).
+**Token expiration:** Access tokens expire after 30 minutes by default. Refresh-token functionality is not included in this version.
 
-## User data model
+## 🔐 Security Implementation
 
-The `users` table contains:
+Security is a central part of this project.
 
-| Column | Description |
-| --- | --- |
-| `id` | Integer primary key |
-| `name` | Display name (1–100 characters) |
-| `email` | Unique email address |
-| `hashed_password` | Argon2id password hash; never returned by the API |
-| `is_active` | Account active flag |
-| `token_version` | Internal counter used to invalidate older access tokens after password changes |
-| `created_at` | Creation timestamp |
-| `updated_at` | Last update timestamp |
+- **Argon2id:** Passwords are securely hashed before database storage.
+- **JWT:** Access tokens are signed using HS256.
+- **Token validation:** Signature, expiration, token type, subject, and token version are checked.
+- **Protected routes:** Authenticated endpoints require a Bearer token.
+- **Token invalidation:** Password changes increment an internal token-version counter.
+- **Data protection:** Password hashes are excluded from API response schemas.
+- **Environment variables:** Database credentials and JWT secrets are stored outside the source code.
 
-## Security decisions
+> This project is a learning and portfolio implementation. A production deployment should additionally consider rate limiting, monitoring, operational secret management, backup policies, HTTPS, and account-recovery workflows.
 
-- Passwords are hashed with Argon2id via `argon2-cffi`; plaintext passwords are not persisted.
-- JWTs are signed with HS256 using a secret supplied through the environment.
-- Access tokens include `sub`, `iat`, `exp`, `type`, and `ver` claims. The API checks the signature, expiration, token type, subject, and current token version.
-- Protected routes require an HTTP `Authorization: Bearer <token>` header.
-- `/users/me` uses the authenticated identity from the token; callers cannot supply another user's ID to access these operations.
-- Login returns the same public error for an unknown email and an incorrect password.
-- Password hashes are excluded from response schemas.
-- Validation responses omit submitted input values, which prevents password values from being echoed in error details.
-- Changing a password increments `token_version`, invalidating access tokens issued before the change.
-- JWT secrets and database credentials are kept in `.env`, which is excluded from Git.
-- Production deployments must use HTTPS and a strong, unique JWT secret.
+## 🚀 Getting Started
 
-This project is a learning and portfolio implementation. A production deployment should additionally consider rate limiting on authentication endpoints, monitoring, operational secret management, backup policies, and a formal account-recovery flow.
-
-## Requirements
+### Requirements
 
 - Python 3.12 or newer
 - PostgreSQL 14 or newer
 - Git
 
-## Local setup
+### Installation
 
-### 1. Clone the repository and enter the project
+**Clone the repository**
 
 ```bash
 git clone <your-repository-url>
 cd secureauth-api
 ```
 
-### 2. Create and activate a virtual environment
+**Create and activate a virtual environment**
 
 Linux / macOS:
 
@@ -175,75 +223,71 @@ py -3.12 -m venv .venv
 .venv\Scripts\Activate.ps1
 ```
 
-### 3. Install dependencies
+**Install dependencies**
 
 ```bash
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-### 4. Create a PostgreSQL role and database
+### Database Configuration
 
-Connect to PostgreSQL as an administrator and run the following SQL. Replace the example password with a strong, private value.
+Create a PostgreSQL user and database:
 
 ```sql
-CREATE USER secureauth_user WITH LOGIN PASSWORD 'replace_with_a_private_password';
+CREATE USER secureauth_user WITH LOGIN PASSWORD 'your_private_password';
 CREATE DATABASE secureauth_db OWNER secureauth_user;
 ```
 
-### 5. Configure environment variables
+### Environment Variables
 
-Copy the example file:
+Copy the example environment file:
 
 ```bash
 cp .env.example .env
 ```
 
-Generate a JWT secret:
+Generate a secure JWT secret:
 
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(48))"
 ```
 
-Put the generated value in `JWT_SECRET_KEY` in `.env`. Update `DATABASE_URL` with the PostgreSQL username, password, host, port, and database name.
-
-Example format (use your own credentials and secret):
+Configure your `.env` file:
 
 ```dotenv
 DATABASE_URL=postgresql+psycopg://secureauth_user:your_password@localhost:5432/secureauth_db
-JWT_SECRET_KEY=paste_your_generated_secret_here
+JWT_SECRET_KEY=your_generated_secret
 JWT_ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 APP_NAME=SecureAuth API
 ENVIRONMENT=development
 ```
 
-If your database password contains reserved URL characters such as `@`, `:`, `/`, `#`, or `%`, URL-encode the password portion of the connection URL. Never commit `.env` or share its contents.
+Use your own database credentials and generated secret. Never commit your `.env` file.
 
-### 6. Apply database migrations
+### Run Database Migrations
 
 ```bash
 alembic upgrade head
 ```
 
-### 7. Run the API
+### Start the Development Server
 
 ```bash
 python -m uvicorn app.main:app --reload
 ```
 
-Open:
+The API will be available at:
 
 - API root: `http://127.0.0.1:8000/`
 - Swagger UI: `http://127.0.0.1:8000/docs`
 - ReDoc: `http://127.0.0.1:8000/redoc`
 - Health check: `http://127.0.0.1:8000/health`
 
-Keep the terminal running while using the API. Press `Ctrl+C` to stop the development server.
+## 🔄 Example Usage
 
-## Example requests
-
-### Register
+### Register a User
 
 ```bash
 curl -X POST http://127.0.0.1:8000/auth/register \
@@ -251,9 +295,7 @@ curl -X POST http://127.0.0.1:8000/auth/register \
   -d '{"name":"Ada Lovelace","email":"ada@example.com","password":"Strong-Password-123!"}'
 ```
 
-The response contains the public user profile only. It never contains the password or password hash.
-
-### Login
+### Authenticate
 
 ```bash
 curl -X POST http://127.0.0.1:8000/auth/login \
@@ -261,55 +303,70 @@ curl -X POST http://127.0.0.1:8000/auth/login \
   -d '{"email":"ada@example.com","password":"Strong-Password-123!"}'
 ```
 
-Copy the returned `access_token` and use it as a Bearer token in requests to protected endpoints.
+Use the returned `access_token` to access protected endpoints.
 
-### Get the current profile
+### Retrieve the Authenticated User
 
 ```bash
 curl http://127.0.0.1:8000/users/me \
   -H "Authorization: Bearer <access_token>"
 ```
 
-### Update the current profile
+## 🧪 Testing
 
-```bash
-curl -X PATCH http://127.0.0.1:8000/users/me \
-  -H "Authorization: Bearer <access_token>" \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Ada Byron"}'
-```
+The project uses **pytest** and **HTTPX** for automated API testing.
 
-### Change password
+Tests run against an isolated in-memory SQLite database, without connecting to or modifying the configured PostgreSQL database.
 
-```bash
-curl -X PATCH http://127.0.0.1:8000/users/me/password \
-  -H "Authorization: Bearer <access_token>" \
-  -H "Content-Type: application/json" \
-  -d '{"current_password":"Strong-Password-123!","new_password":"Another-Strong-456!"}'
-```
-
-A successful password change returns `204 No Content` and invalidates older access tokens for that account.
-
-## Automated tests
-
-The test suite uses an isolated in-memory SQLite database. It does not connect to or modify the configured PostgreSQL database.
+Run the test suite:
 
 ```bash
 pytest -v
 ```
 
-Coverage includes registration, duplicate email, invalid input, login success/failure, missing/invalid/expired/wrong-type tokens, profile retrieval and update, duplicate email on profile update, password change, token invalidation, and safe response fields.
+Test coverage includes:
 
-## Future improvements
+- User registration and duplicate email handling.
+- Invalid registration data.
+- Successful and unsuccessful login.
+- Missing, invalid, expired, and incorrect-type tokens.
+- Profile retrieval and updates.
+- Duplicate email during profile updates.
+- Password changes and token invalidation.
+- Safe API response fields.
 
-- Add refresh-token rotation and revocation.
-- Add rate limiting and account lockout controls for authentication endpoints.
-- Add email verification and password-reset workflows.
-- Add structured logging and monitoring.
-- Add database-backed integration tests against a temporary PostgreSQL instance.
-- Add CI for linting, type checking, and automated tests.
+## 🔮 Future Improvements
 
-## Scope
+- Refresh-token rotation and revocation.
+- Rate limiting and account lockout protection.
+- Email verification.
+- Password recovery workflows.
+- Structured logging and monitoring.
+- PostgreSQL integration tests.
+- Continuous integration with GitHub Actions.
+- Docker support.
 
-This version intentionally excludes a frontend, OAuth/social login, refresh tokens, Docker, email delivery, and external integrations. The focus is a clear, testable foundation for understanding secure authentication in a Python REST API.
-# secureauth-api
+## 📌 Project Scope
+
+This version focuses on the foundations of secure authentication and account management.
+
+The following are intentionally outside the current scope:
+
+- Frontend application.
+- OAuth and social login.
+- Refresh-token functionality.
+- Email delivery.
+- Docker deployment.
+- External integrations.
+
+---
+
+<div align="center">
+
+### Developed by Jean Ribeiro
+
+**Junior Full Stack Developer | Python | FastAPI | React**
+
+[GitHub](https://github.com/JeanRibeiro8) · [LinkedIn](https://www.linkedin.com/in/jean-ribeiro-9a3792267/) · [Portfolio](https://jeanribeiro8.github.io/JeanRibeiro/)
+
+</div>

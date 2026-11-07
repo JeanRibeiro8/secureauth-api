@@ -27,7 +27,7 @@ A REST API built with Python and FastAPI, featuring secure user authentication, 
 
 </div>
 
-> **Live Demo:** [https://./]
+> **Live Demo:** [https://secureauth-api-kttl.onrender.com/docs]
 > **Repository:** [https://github.com/JeanRibeiro8/secureauth-api]
 
 ---

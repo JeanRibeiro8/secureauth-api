@@ -1,0 +1,22 @@
+# Secrets and local configuration
+.env
+.env.*.local
+
+# Python environments and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE / OS files
+.idea/
+.vscode/
+.DS_Store
+
+# Local databases and logs
+*.sqlite3
+*.db
+*.log
